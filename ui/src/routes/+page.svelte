@@ -16,7 +16,9 @@
 
 			player.attachMediaElement(videoEl);
 			player.load();
-			player.play();
+			setTimeout(() => {
+				player.play();
+			}, 1000);
 		}
 	});
 </script>
