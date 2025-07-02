@@ -44,21 +44,18 @@
 	}
 </script>
 
-<main>
-	<container>
-		<video
-			bind:this={videoEl}
-			autoplay
-			muted
-			playsinline
-			controls
-			style="width: 100%; max-width: 100%;"
-		></video>
-		<p>test</p>
-	</container>
+<div class="container">
+	<video
+		bind:this={videoEl}
+		autoplay
+		muted
+		playsinline
+		controls
+		style="width: 100%; max-width: 100%;"
+	></video>
+</div>
 
-	<button on:click={reload}>Reload</button>
-</main>
+<button on:click={reload}>Reload</button>
 
 <style>
 	:global(body) {
@@ -71,14 +68,7 @@
 		font-family: sans-serif;
 	}
 
-	main {
-		overflow: hidden;
-		width: 100vw;
-		height: 100vh;
-	}
-
-	container {
-		position: relative;
+	.container {
 		width: 100vw;
 		height: calc(100vw / 16 * 9);
 		background-color: #000;
@@ -88,9 +78,13 @@
 			height: 100vh;
 		}
 
-		* {
+		& > * {
 			position: absolute;
-			inset: 0;
 		}
+	}
+
+	button {
+		font-size: 1vw;
+		font-weight: 500;
 	}
 </style>
