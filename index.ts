@@ -83,17 +83,27 @@ Bun.serve({
       return response;
     },
 
-    "/": staticRoutes["index.html"],
+    "/": () => {
+      const file = staticRoutes["index.html"];
+
+      return new Response(file.bytes, {
+        headers: { "Content-Type": file.type },
+      });
+    },
 
     "/*": async (req: Bun.BunRequest) => {
       const url = new URL(req.url);
-      const path = url.pathname.slice(1); // Remove leading slash
+      const path = url.pathname.slice(1);
 
       if (!(path in staticRoutes)) {
         return new Response("Not found", { status: 404 });
       }
 
-      return staticRoutes[path as keyof typeof staticRoutes];
+      const file = staticRoutes[path as keyof typeof staticRoutes];
+
+      return new Response(file.bytes, {
+        headers: { "Content-Type": file.type },
+      });
     },
   },
 });

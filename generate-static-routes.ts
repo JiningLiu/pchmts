@@ -25,8 +25,8 @@ allFiles.forEach((filePath, i) => {
   // Get the path relative to the project root for Bun.file
   const relPath = `./${filePath.replace(/\\/g, "/")}`;
   const exportKey = relative(inputDir, filePath).replace(/\\/g, "/");
-  imports += `import * as ${varName} from \"${relPath}\";\n`;
-  exports += `  \"${exportKey}\": ${varName},\n`;
+  imports += `const ${varName} = Bun.file(\"${relPath}\");\n`;
+  exports += `  \"${exportKey}\": { bytes: await ${varName}.bytes(), type: ${varName}.type },\n`;
 });
 
 const content = `${imports}\nexport default {\n${exports}};\n`;
