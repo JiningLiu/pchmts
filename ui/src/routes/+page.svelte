@@ -18,8 +18,6 @@
 		LoggingControl?: Mpegts.LoggingControl;
 	};
 
-	let buffer = 0.5;
-
 	let videoEl: HTMLVideoElement;
 
 	onMount(async () => {
@@ -36,7 +34,9 @@
 			player.attachMediaElement(videoEl);
 			player.load();
 			setTimeout(() => {
-				videoEl.currentTime = videoEl.duration - buffer;
+				if (videoEl.seekable.length > 0) {
+					videoEl.currentTime = videoEl.seekable.end(0) - 0.5;
+				}
 				player.play();
 			}, 2500);
 		}
@@ -61,25 +61,12 @@
 	<button
 		tabindex="0"
 		on:click={() => {
-			videoEl.currentTime = videoEl.duration - buffer;
+			if (videoEl.seekable.length > 0) {
+				videoEl.currentTime = videoEl.seekable.end(0) - 0.5;
+			}
 			videoEl.play();
 		}}>Live</button
 	>
-
-	<br />
-
-	<label for="buffer">Buffer (s)</label>
-
-	<input
-		tabindex="0"
-		type="number"
-		name="buffer"
-		id="buffer"
-		bind:value={buffer}
-		min="0"
-		max="10"
-		step="0.1"
-	/>
 
 	<br />
 
