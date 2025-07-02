@@ -37,6 +37,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # pchmts
 static-routes.ts
+pchmts
 
 # MARK: - UI
 
