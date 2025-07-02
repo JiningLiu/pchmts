@@ -33,9 +33,7 @@
 
 			player.attachMediaElement(videoEl);
 			player.load();
-			setTimeout(() => {
-				player.play();
-			}, 2000);
+			player.play();
 		}
 	});
 </script>
@@ -59,7 +57,7 @@
 	<button
 		tabindex="0"
 		on:click={() => {
-			videoEl.currentTime = videoEl.duration;
+			videoEl.currentTime = videoEl.duration - 0.5;
 		}}>Live</button
 	>
 
