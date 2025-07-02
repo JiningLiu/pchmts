@@ -2,14 +2,14 @@ const fifoPath = "/tmp/pchm.ts";
 await Bun.spawn(["rm", "-f", fifoPath]).exited;
 await Bun.spawn(["mkfifo", fifoPath]).exited;
 
-const fifoFile = Bun.file(fifoPath);
-const stream = fifoFile.stream();
-
 Bun.serve({
   port: 20240,
 
   routes: {
     "/pchmts": () => {
+      const fifoFile = Bun.file(fifoPath);
+      const stream = fifoFile.stream();
+      
       return new Response(stream, {
         headers: {
           "Content-Type": "video/mp2t",
