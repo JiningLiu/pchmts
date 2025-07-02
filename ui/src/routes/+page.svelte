@@ -45,14 +45,7 @@
 </script>
 
 <div class="container">
-	<video
-		bind:this={videoEl}
-		autoplay
-		muted
-		playsinline
-		controls
-		style="width: 100%; max-width: 100%;"
-	></video>
+	<video bind:this={videoEl} autoplay muted playsinline></video>
 </div>
 
 <button on:click={reload}>Reload</button>
@@ -66,6 +59,7 @@
 		background-color: #000;
 		color: #fff;
 		font-family: sans-serif;
+		overflow: hidden;
 	}
 
 	.container {
@@ -76,6 +70,11 @@
 		@media (min-aspect-ratio: 16 / 9) {
 			width: calc(100vh * 16 / 9);
 			height: 100vh;
+		}
+
+		video {
+			width: 100%;
+			height: 100%;
 		}
 
 		& > * {
