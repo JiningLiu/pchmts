@@ -1,10 +1,27 @@
 <script lang="ts">
+	import type Mpegts from 'mpegts.js';
 	import { onMount } from 'svelte';
+
+	let mpegts: {
+		getFeatureList: any;
+		isSupported: any;
+		createPlayer: any;
+		BaseLoader?: Mpegts.BaseLoaderConstructor;
+		LoaderStatus?: Mpegts.LoaderStatus;
+		LoaderErrors?: Mpegts.LoaderErrors;
+		version?: string;
+		Events?: Readonly<Mpegts.Events>;
+		ErrorTypes?: Readonly<Mpegts.ErrorTypes>;
+		ErrorDetails?: Readonly<Mpegts.ErrorDetails>;
+		MSEPlayer?: Mpegts.PlayerConstructor<Mpegts.MSEPlayer>;
+		NativePlayer?: Mpegts.PlayerConstructor<Mpegts.NativePlayer>;
+		LoggingControl?: Mpegts.LoggingControl;
+	};
 
 	let videoEl: HTMLVideoElement;
 
 	onMount(async () => {
-		const mpegts = (await import('mpegts.js')).default;
+		mpegts = (await import('mpegts.js')).default;
 
 		if (mpegts.getFeatureList().mseLivePlayback && mpegts.isSupported()) {
 			const player = mpegts.createPlayer({
@@ -21,6 +38,10 @@
 			}, 2000);
 		}
 	});
+
+	function reload() {
+		location.reload();
+	}
 </script>
 
 <main>
@@ -34,6 +55,8 @@
 			style="width: 100%; max-width: 100%;"
 		></video></container
 	>
+
+	<button on:click={reload}>Reload</button>
 </main>
 
 <style>
@@ -48,9 +71,7 @@
 	}
 
 	main {
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		overflow: hidden;
 		width: 100vw;
 		height: 100vh;
 	}
