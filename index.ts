@@ -2,7 +2,7 @@ const pchmtsMkfifoProc = Bun.spawn(["mkfifo", "/tmp/pchm.ts"]);
 await pchmtsMkfifoProc.exited;
 
 Bun.serve({
-  port: 80,
+  port: 20240,
   routes: {
     "/stream": () => {
       const file = Bun.file("/tmp/pchm.ts");
