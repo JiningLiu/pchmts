@@ -1,8 +1,3 @@
-const fifoPath = "/tmp/pchm.ts";
-
-await Bun.spawn(["rm", "-f", fifoPath]).exited;
-await Bun.spawn(["mkfifo", fifoPath]).exited;
-
 Bun.serve({
   port: 20240,
   routes: {
