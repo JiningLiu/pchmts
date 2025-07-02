@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "[pchmts] > Welcome to the pchmts installer."
 
@@ -7,7 +7,7 @@ if [[ "$1" == "--skip-dependencies" ]]; then
 else
     echo "[pchmts] > pchmts requires libcamera-apps and ffmpeg to be installed on your Pi."
 
-    read -p "[pchmts] > Do you want to install/update libcamera-apps and ffmpeg now? (y/N): " update_choice
+    read -p "[pchmts] > Do you want to install/update libcamera-apps and ffmpeg now? (y/N): " update_choice </dev/tty
 
     if [[ "$update_choice" == "y" || "$update_choice" == "Y" ]]; then
         echo "[pchmts] > Updating libcamera-apps and ffmpeg..."
