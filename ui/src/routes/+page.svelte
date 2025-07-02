@@ -4,6 +4,8 @@
 	let videoEl: HTMLVideoElement;
 
 	onMount(async () => {
+		console.log('ok');
+
 		const mpegts = (await import('mpegts.js')).default;
 
 		if (mpegts.getFeatureList().mseLivePlayback && mpegts.isSupported()) {
@@ -13,6 +15,7 @@
 				isLive: true,
 				cors: true
 			});
+			console.log(player);
 
 			player.attachMediaElement(videoEl);
 			player.load();
