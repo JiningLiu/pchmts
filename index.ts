@@ -1,4 +1,4 @@
-import index from "./ui/build/index.html";
+import staticRoutes from "./static-routes";
 
 let procExists = false;
 
@@ -83,17 +83,17 @@ Bun.serve({
       return response;
     },
 
-    "/": index,
+    "/": staticRoutes["index.html"],
 
     "/*": async (req: Bun.BunRequest) => {
       const url = new URL(req.url);
-      const file = Bun.file(`ui/build${url.pathname}`);
+      const path = url.pathname.slice(1); // Remove leading slash
 
-      console.log(file.type);
+      if (!(path in staticRoutes)) {
+        return new Response("Not found", { status: 404 });
+      }
 
-      return new Response(await file.bytes(), {
-        headers: { "Content-Type": file.type },
-      });
+      return staticRoutes[path as keyof typeof staticRoutes];
     },
   },
 });
