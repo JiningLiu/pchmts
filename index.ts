@@ -22,8 +22,9 @@ Bun.serve({
       });
     },
 
-    "/:file": async (req) => {
-      const file = Bun.file(`ui/build/${req.params.file}`);
+    "/*": async (req) => {
+      const url = new URL(req.url);
+      const file = Bun.file(`ui/build${url.pathname}`);
 
       return new Response(await file.bytes(), {
         headers: {
