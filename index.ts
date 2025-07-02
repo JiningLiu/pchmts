@@ -1,4 +1,3 @@
-let clientExists = false;
 let currentProc: any = null;
 
 Bun.serve({
@@ -6,13 +5,11 @@ Bun.serve({
 
   routes: {
     "/pchmts": () => {
-      if (clientExists) {
-        return new Response("Client already exists", { status: 400 });
+      if (currentProc) {
+        currentProc.kill("SIGTERM");
+        currentProc = null;
       }
 
-      clientExists = true;
-
-      // More robust command with error handling
       const command = `
         libcamera-vid -t 0 --codec yuv420 --width 1920 --height 1080 --framerate 30 -o - | \
         ffmpeg -f rawvideo -pixel_format yuv420p -video_size 1920x1080 -framerate 30 -i - \
@@ -27,7 +24,6 @@ Bun.serve({
 
       currentProc = proc;
 
-      // Pipe stderr to console for debugging
       if (proc.stderr) {
         proc.stderr.pipeTo(
           new WritableStream({
@@ -39,7 +35,6 @@ Bun.serve({
         );
       }
 
-      // Create a more robust stream with error handling
       const stream = new ReadableStream({
         start(controller) {
           const reader = proc.stdout?.getReader();
@@ -65,7 +60,6 @@ Bun.serve({
             } finally {
               reader.releaseLock();
               // Clean up when stream ends
-              clientExists = false;
               if (currentProc) {
                 currentProc.kill("SIGTERM");
                 currentProc = null;
@@ -77,7 +71,6 @@ Bun.serve({
         },
         cancel() {
           console.log("Stream cancelled, cleaning up...");
-          clientExists = false;
           if (currentProc) {
             currentProc.kill("SIGTERM");
             currentProc = null;
@@ -99,73 +92,17 @@ Bun.serve({
       return response;
     },
 
-    "/status": () => {
-      return new Response(
-        JSON.stringify({
-          clientExists,
-          processRunning: currentProc !== null,
-          pid: currentProc?.pid || null,
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-    },
-
-    "/stop": () => {
-      if (currentProc) {
-        currentProc.kill("SIGTERM");
-        currentProc = null;
-      }
-      clientExists = false;
-      return new Response("Stream stopped", { status: 200 });
-    },
-
-    "/test": () => {
-      return new Response("Server is running", { status: 200 });
-    },
-
-    "/camera-test": async () => {
-      try {
-        const proc = Bun.spawn(["libcamera-vid", "--help"], {
-          stdout: "pipe",
-          stderr: "pipe",
-        });
-
-        const output = await new Response(proc.stdout).text();
-        return new Response(
-          JSON.stringify({
-            success: true,
-            libcameraAvailable: true,
-            output: output.substring(0, 200) + "...",
-          }),
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-      } catch (error) {
-        return new Response(
-          JSON.stringify({
-            success: false,
-            libcameraAvailable: false,
-            error: error instanceof Error ? error.message : String(error),
-          }),
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-      }
-    },
-
     "/": async () => {
       return new Response(await Bun.file("ui/build/index.html").bytes(), {
         headers: { "Content-Type": "text/html" },
       });
     },
 
-    "/*": async (req) => {
+    "/*": async (req: Bun.BunRequest) => {
       const url = new URL(req.url);
       const file = Bun.file(`ui/build${url.pathname}`);
+
+      console.log(file.type);
 
       return new Response(await file.bytes(), {
         headers: { "Content-Type": file.type },
