@@ -45,16 +45,17 @@
 </script>
 
 <main>
-	<container
-		><video
+	<container>
+		<video
 			bind:this={videoEl}
 			autoplay
 			muted
 			playsinline
 			controls
 			style="width: 100%; max-width: 100%;"
-		></video></container
-	>
+		></video>
+		<p>test</p>
+	</container>
 
 	<button on:click={reload}>Reload</button>
 </main>
@@ -88,11 +89,8 @@
 		}
 
 		* {
-			width: 100%;
-			height: 100%;
 			position: absolute;
-			top: 0;
-			left: 0;
+			inset: 0;
 		}
 	}
 </style>
