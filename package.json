@@ -4,8 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "prep": "bun i && cd ui/ && bun i && cd ..",
-    "build": "chmod +x ./build.sh && ./build.sh && bun build --compile --minify --sourcemap index.ts --outfile pchmts"
+    "prep": "bun i && cd ui/ && bun i && cd .. && chmod +x ./build.sh",
+    "dev": "./build.sh && bun index.ts",
+    "build": "./build.sh && bun build --compile --minify --sourcemap --bytecode index.ts --outfile pchmts"
   },
   "devDependencies": {
     "@types/bun": "latest"

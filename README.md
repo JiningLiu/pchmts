@@ -1,15 +1,25 @@
 # pchmts
 
-To install dependencies:
+## Development
+
+Development should be done on a Raspberry Pi.
+
+To prepare the repo:
 
 ```bash
-bun install
+bun run prep
 ```
 
-To run:
+To run for development:
 
 ```bash
-bun run index.ts
+bun run dev
 ```
 
-This project was created using `bun init` in bun v1.2.5. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+To build:
+
+```bash
+bun run build
+```
+
+© 2025 Jining Liu. [MIT License](LICENSE).
