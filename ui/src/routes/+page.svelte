@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type Mpegts from 'mpegts.js';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 
 	let mpegts: {
 		getFeatureList: any;
@@ -38,17 +38,50 @@
 			}, 2000);
 		}
 	});
-
-	function reload() {
-		location.reload();
-	}
 </script>
 
 <div class="container">
 	<video bind:this={videoEl} autoplay muted playsinline></video>
 </div>
 
-<button on:click={reload}>Reload</button>
+{#if videoEl}
+	<button
+		tabindex="0"
+		on:click={() => {
+			if (videoEl.paused) {
+				videoEl.play();
+			} else {
+				videoEl.pause();
+			}
+		}}>Play/Pause</button
+	>
+
+	<button
+		tabindex="0"
+		on:click={() => {
+			videoEl.currentTime = videoEl.duration;
+		}}>Live</button
+	>
+
+	<br />
+
+	<label for="volume"
+		>Volume: {String(Math.round(videoEl.volume * 100) / 100)
+			.padEnd(2, '.')
+			.padEnd(4, '0')}</label
+	>
+
+	<input
+		tabindex="0"
+		type="range"
+		name="volume"
+		id="volume"
+		min="0"
+		max="1"
+		bind:value={videoEl.volume}
+		step="0.01"
+	/>
+{/if}
 
 <style>
 	:global(body) {
@@ -84,5 +117,12 @@
 	button {
 		font-size: 1vw;
 		font-weight: 500;
+	}
+
+	input[type='range'] {
+		width: 10vw;
+		height: 1vw;
+		border-radius: 0.5vw;
+		outline: none;
 	}
 </style>
