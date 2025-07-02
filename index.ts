@@ -1,4 +1,4 @@
-import index from "ui/build/index.html";
+import index from "./ui/build/index.html";
 
 let procExists = false;
 
