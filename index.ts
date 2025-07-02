@@ -3,6 +3,7 @@ Bun.serve({
 
   routes: {
     "/pchmts": () => {
+      Bun.spawnSync(["pkill", "-f", '"cat /tmp/pchm.ts"']);
       const file = Bun.file("/tmp/pchm.ts");
 
       return new Response(file.stream(), {
