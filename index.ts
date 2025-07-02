@@ -86,7 +86,7 @@ Bun.serve({
     "/": () => {
       const file = staticRoutes["index.html"];
 
-      return new Response(file.bytes, {
+      return new Response(Uint8Array.fromBase64(file.bytes), {
         headers: { "Content-Type": file.type },
       });
     },
