@@ -14,11 +14,9 @@ Bun.serve({
 
       // More robust command with error handling
       const command = `
-        set -e
         libcamera-vid -t 0 --codec yuv420 --width 1920 --height 1080 --framerate 30 -o - | \
-        ffmpeg -f rawvideo -pixel_format yuv420p -video_size 1920x1080 -framerate 30 -i - \
-        -c:v libx264 -preset ultrafast -tune zerolatency -f mpegts - 2>/dev/null || \
-        (echo "Pipeline failed, trying alternative..." >&2; exit 1)
+         ffmpeg -f rawvideo -pixel_format yuv420p -video_size 1920x1080 -framerate 30 -i - \
+         -c:v libx264 -preset ultrafast -tune zerolatency -f mpegts -
       `;
 
       const proc = Bun.spawn(["bash", "-c", command], {
@@ -34,7 +32,7 @@ Bun.serve({
           new WritableStream({
             write(chunk) {
               const text = new TextDecoder().decode(chunk);
-              console.log("Pipeline stderr:", text);
+              console.log(text);
             },
           })
         );
