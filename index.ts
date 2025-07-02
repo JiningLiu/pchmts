@@ -46,7 +46,6 @@ Bun.serve({
                 const { done, value } = await reader.read();
                 if (done) {
                   console.log("Stream ended normally");
-                  controller.close();
                   break;
                 }
                 controller.enqueue(value);

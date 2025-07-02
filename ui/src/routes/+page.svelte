@@ -18,10 +18,57 @@
 			player.load();
 			setTimeout(() => {
 				player.play();
-			}, 1000);
+			}, 2000);
 		}
 	});
 </script>
 
-<video bind:this={videoEl} autoplay muted playsinline controls style="width: 100%; max-width: 100%;"
-></video>
+<main>
+	<container
+		><video
+			bind:this={videoEl}
+			autoplay
+			muted
+			playsinline
+			controls
+			style="width: 100%; max-width: 100%;"
+		></video></container
+	>
+</main>
+
+<style>
+	:global(body) {
+		margin: 0;
+		padding: 0;
+		background-color: #000;
+		color: #fff;
+		font-family: sans-serif;
+	}
+
+	main {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100vw;
+		width: 100vh;
+	}
+
+	container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100vw;
+		height: calc(100vw / 16 * 9);
+		background-color: #000;
+
+		@media (min-aspect-ratio: 16 / 9) {
+			width: calc(100vh * 16 / 9);
+			height: 100vh;
+		}
+	}
+
+	video {
+		border: 2px solid #fff;
+		border-radius: 8px;
+	}
+</style>
