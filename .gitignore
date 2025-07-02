@@ -1,3 +1,5 @@
+# MARK: - SERVER
+
 # dependencies (bun install)
 node_modules
 
@@ -32,3 +34,29 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# MARK: - UI
+
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/ui/.svelte-kit
+/ui/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

@@ -1,7 +1,8 @@
 Bun.serve({
   port: 20240,
+
   routes: {
-    "/stream": () => {
+    "/pchmts": () => {
       const file = Bun.file("/tmp/pchm.ts");
 
       return new Response(file.stream(), {
@@ -9,6 +10,24 @@ Bun.serve({
           "Content-Type": "video/mp2t",
           "Cache-Control": "no-cache",
           Connection: "keep-alive",
+        },
+      });
+    },
+
+    "/": async () => {
+      return new Response(await Bun.file("ui/build/index.html").bytes(), {
+        headers: {
+          "Content-Type": "text/html",
+        },
+      });
+    },
+
+    "/:file": async (req) => {
+      const file = Bun.file(`ui/build/${req.params.file}`);
+
+      return new Response(await file.bytes(), {
+        headers: {
+          "Content-Type": file.type,
         },
       });
     },
