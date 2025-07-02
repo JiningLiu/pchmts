@@ -68,9 +68,4 @@
 			height: 100vh;
 		}
 	}
-
-	video {
-		border: 2px solid #fff;
-		border-radius: 8px;
-	}
 </style>
