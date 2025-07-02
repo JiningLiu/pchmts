@@ -36,8 +36,8 @@
 			player.attachMediaElement(videoEl);
 			player.load();
 			setTimeout(() => {
-				player.play();
 				videoEl.currentTime = videoEl.duration - buffer;
+				player.play();
 			}, 2500);
 		}
 	});
@@ -61,8 +61,8 @@
 	<button
 		tabindex="0"
 		on:click={() => {
-			videoEl.play();
 			videoEl.currentTime = videoEl.duration - buffer;
+			videoEl.play();
 		}}>Live</button
 	>
 
