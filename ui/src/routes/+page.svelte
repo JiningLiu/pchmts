@@ -41,9 +41,8 @@
 	});
 </script>
 
-<div class="container">
-	<video bind:this={videoEl} autoplay muted playsinline></video>
-</div>
+<!-- svelte-ignore a11y_media_has_caption -->
+<video bind:this={videoEl} autoplay playsinline></video>
 
 {#if videoEl}
 	<button
@@ -97,23 +96,9 @@
 		overflow: hidden;
 	}
 
-	.container {
+	video {
 		width: 100vw;
 		height: calc(100vw / 16 * 9);
-		background-color: #000;
-
-		@media (min-aspect-ratio: 16 / 9) {
-			width: calc(100vh * 16 / 9);
-			height: 100vh;
-		}
-
-		video {
-			width: 100%;
-		}
-
-		& > * {
-			position: absolute;
-		}
 	}
 
 	button {
