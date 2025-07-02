@@ -1,3 +1,5 @@
+import index from "ui/build/index.html";
+
 let procExists = false;
 
 Bun.serve({
@@ -81,22 +83,7 @@ Bun.serve({
       return response;
     },
 
-    "/": async () => {
-      return new Response(await Bun.file("ui/build/index.html").bytes(), {
-        headers: { "Content-Type": "text/html" },
-      });
-    },
-
-    "/*": async (req: Bun.BunRequest) => {
-      const url = new URL(req.url);
-      const file = Bun.file(`ui/build${url.pathname}`);
-
-      console.log(file.type);
-
-      return new Response(await file.bytes(), {
-        headers: { "Content-Type": file.type },
-      });
-    },
+    "/": index,
   },
 });
 
