@@ -50,7 +50,6 @@ Bun.serve({
                   console.log("Stream ended normally");
                   break;
                 }
-                controller.enqueue(value);
               }
             } catch (error) {
               console.error("Stream read error:", error);
