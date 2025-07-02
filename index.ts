@@ -101,7 +101,7 @@ Bun.serve({
 
       const file = staticRoutes[path as keyof typeof staticRoutes];
 
-      return new Response(file.bytes, {
+      return new Response(Uint8Array.fromBase64(file.bytes), {
         headers: { "Content-Type": file.type },
       });
     },

@@ -17,19 +17,20 @@ async function getAllFiles(dir: string): Promise<string[]> {
 
 const allFiles = await getAllFiles(inputDir);
 
-let imports = "";
 let exports = "";
 
-allFiles.forEach((filePath, i) => {
-  const varName = `file_${i}`;
-  // Get the path relative to the project root for Bun.file
+for (const i in allFiles) {
+  const filePath = allFiles[i]!;
   const relPath = `./${filePath.replace(/\\/g, "/")}`;
   const exportKey = relative(inputDir, filePath).replace(/\\/g, "/");
-  imports += `const ${varName} = Bun.file(\"${relPath}\");\n`;
-  exports += `  \"${exportKey}\": { bytes: await ${varName}.bytes(), type: ${varName}.type },\n`;
-});
 
-const content = `${imports}\nexport default {\n${exports}};\n`;
+  const file = Bun.file(relPath);
+  exports += `  "${exportKey}": { bytes: "${(
+    await file.bytes()
+  ).toBase64()}", type: "${file.type}" },\n`;
+}
+
+const content = `export default {\n${exports}};\n`;
 
 await Bun.write(outputFile, content);
 console.log(`✅ Generated ${outputFile}`);
