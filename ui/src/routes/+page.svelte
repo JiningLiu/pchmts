@@ -77,9 +77,7 @@
 	}
 
 	container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		position: relative;
 		width: 100vw;
 		height: calc(100vw / 16 * 9);
 		background-color: #000;
@@ -87,6 +85,14 @@
 		@media (min-aspect-ratio: 16 / 9) {
 			width: calc(100vh * 16 / 9);
 			height: 100vh;
+		}
+
+		* {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
 		}
 	}
 </style>
