@@ -40,6 +40,8 @@
 	:global(body) {
 		margin: 0;
 		padding: 0;
+		width: 100vw;
+		height: 100vh;
 		background-color: #000;
 		color: #fff;
 		font-family: sans-serif;
@@ -50,7 +52,7 @@
 		justify-content: center;
 		align-items: center;
 		width: 100vw;
-		width: 100vh;
+		height: 100vh;
 	}
 
 	container {
