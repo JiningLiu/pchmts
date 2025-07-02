@@ -7,12 +7,9 @@ Bun.serve({
   port: 20240,
   routes: {
     "/stream": () => {
-      const catProc = Bun.spawn(["cat", fifoPath], {
-        stdout: "pipe",
-        stderr: "inherit",
-      });
+      const file = Bun.file("/tmp/pchm.ts");
 
-      return new Response(catProc.stdout, {
+      return new Response(file.stream(), {
         headers: {
           "Content-Type": "video/mp2t",
           "Cache-Control": "no-cache",
