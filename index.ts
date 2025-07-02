@@ -84,6 +84,17 @@ Bun.serve({
     },
 
     "/": index,
+
+    "/*": async (req: Bun.BunRequest) => {
+      const url = new URL(req.url);
+      const file = Bun.file(`ui/build${url.pathname}`);
+
+      console.log(file.type);
+
+      return new Response(await file.bytes(), {
+        headers: { "Content-Type": file.type },
+      });
+    },
   },
 });
 
