@@ -1,14 +1,11 @@
-let currentProc: any = null;
+let procExists = false;
 
 Bun.serve({
   port: 20240,
 
   routes: {
-    "/pchmts": () => {
-      if (currentProc) {
-        currentProc.kill("SIGTERM");
-        currentProc = null;
-      }
+    "/pchmts": async () => {
+      await killProc();
 
       const command = `
         libcamera-vid -t 0 --codec yuv420 --width 1920 --height 1080 --framerate 30 -o - | \
@@ -22,7 +19,7 @@ Bun.serve({
         stderr: "pipe",
       });
 
-      currentProc = proc;
+      procExists = true;
 
       if (proc.stderr) {
         proc.stderr.pipeTo(
@@ -59,22 +56,15 @@ Bun.serve({
               controller.error(error);
             } finally {
               reader.releaseLock();
-              // Clean up when stream ends
-              if (currentProc) {
-                currentProc.kill("SIGTERM");
-                currentProc = null;
-              }
+              await killProc();
             }
           };
 
           pump();
         },
-        cancel() {
+        async cancel() {
           console.log("Stream cancelled, cleaning up...");
-          if (currentProc) {
-            currentProc.kill("SIGTERM");
-            currentProc = null;
-          }
+          await killProc();
         },
       });
 
@@ -110,3 +100,9 @@ Bun.serve({
     },
   },
 });
+
+async function killProc() {
+  if (procExists) {
+    await Bun.spawn(["bash", "-c", "pkill", "-f", "libcamera-vid"]).exited;
+  }
+}
