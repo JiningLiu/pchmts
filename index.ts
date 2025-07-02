@@ -103,6 +103,7 @@ Bun.serve({
 
 async function killProc() {
   if (procExists) {
-    await Bun.spawn(["bash", "-c", "pkill", "-f", "libcamera-vid"]).exited;
+    await Bun.spawn(["bash", "-c", "$(which pkill)", "-f", "libcamera-vid"])
+      .exited;
   }
 }
