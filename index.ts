@@ -10,10 +10,8 @@ Bun.serve({
       await killProc();
 
       const command = `
-        libcamera-vid -t 0 --codec yuv420 --width 1920 --height 1080 --framerate 30 -o - | \
+        libcamera-vid -t 0 --codec yuv420 --width 1920 --height 1080 --framerate 30 --vflio --hflip -o - | \
         ffmpeg -f rawvideo -pixel_format yuv420p -video_size 1920x1080 -framerate 30 -i - \
-        -vf "vflip" \
-        -hf "hflip" \
         -c:v libx264 -preset ultrafast -tune zerolatency -f mpegts -
       `;
 
