@@ -1,5 +1,14 @@
 # pchmts
 
+## Installation
+
+> [!WARNING]
+> This command will install the latest development deployment.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/JiningLiu/pchmts/refs/heads/dev/install.sh | bash
+```
+
 ## Development
 
 Development should be done on a Raspberry Pi.

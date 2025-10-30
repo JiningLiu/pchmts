@@ -13,6 +13,7 @@ Bun.serve({
         libcamera-vid -t 0 --codec yuv420 --width 1920 --height 1080 --framerate 30 -o - | \
         ffmpeg -f rawvideo -pixel_format yuv420p -video_size 1920x1080 -framerate 30 -i - \
         -vf "vflip" \
+        -hf "hflip" \
         -c:v libx264 -preset ultrafast -tune zerolatency -f mpegts -
       `;
 
@@ -28,7 +29,7 @@ Bun.serve({
           new WritableStream({
             write(chunk) {
               const text = new TextDecoder().decode(chunk);
-              console.log(text);
+              console.log(`[pchmts] > ${text}`);
             },
           })
         );
@@ -47,13 +48,13 @@ Bun.serve({
               while (true) {
                 const { done, value } = await reader.read();
                 if (done) {
-                  console.log("Stream ended normally");
+                  console.log("[pchmts] > Stream ended normally");
                   break;
                 }
                 controller.enqueue(value);
               }
             } catch (error) {
-              console.error("Stream read error:", error);
+              console.error("[pchmts] > Stream read error:", error);
               controller.error(error);
             } finally {
               reader.releaseLock();
@@ -64,7 +65,7 @@ Bun.serve({
           pump();
         },
         async cancel() {
-          console.log("Stream cancelled, cleaning up...");
+          console.log("[pchmts] > Stream cancelled, cleaning up...");
           await killProc();
         },
       });
@@ -107,6 +108,8 @@ Bun.serve({
     },
   },
 });
+
+console.log("[pchmts] > Server started on port 20240.");
 
 async function killProc() {
   if (procExists) {
