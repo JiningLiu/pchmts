@@ -6,6 +6,7 @@
   "scripts": {
     "prep": "bun i && cd ui/ && bun i && cd .. && chmod +x ./build.sh",
     "dev": "./build.sh && bun index.ts",
+    "dev:no-build": "bun index.ts",
     "build": "./build.sh && bun build --compile --minify --sourcemap --bytecode index.ts --outfile pchmts"
   },
   "devDependencies": {

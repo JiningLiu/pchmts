@@ -10,9 +10,13 @@ Bun.serve({
       await killProc();
 
       const command = `
-        libcamera-vid -t 0 --codec yuv420 --width 1920 --height 1080 --framerate 30 --vflio --hflip -o - | \
-        ffmpeg -f rawvideo -pixel_format yuv420p -video_size 1920x1080 -framerate 30 -i - \
-        -c:v libx264 -preset ultrafast -tune zerolatency -f mpegts -
+        libcamera-vid -t 0 --codec yuv420 --width 1920 --height 1080 --framerate 30 --hflip --vflip -o - | \
+        ffmpeg \
+          -f rawvideo -pixel_format yuv420p -video_size 1920x1080 -framerate 30 -i - \
+          -f alsa -ac 2 -ar 44100 -i plughw:A,0 \
+          -c:v libx264 -preset ultrafast -tune zerolatency \
+          -c:a aac -b:a 128k \
+          -f mpegts -
       `;
 
       const proc = Bun.spawn(["bash", "-c", command], {

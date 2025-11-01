@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type Mpegts from 'mpegts.js';
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
 
 	let mpegts: {
 		getFeatureList: any;
@@ -28,7 +28,9 @@
 				type: 'mpegts',
 				url: `http://${location.hostname}:20240/pchmts`,
 				isLive: true,
-				cors: true
+				cors: true,
+				enableStashBuffer: false,
+				stashInitialSize: 128
 			});
 
 			player.attachMediaElement(videoEl);
@@ -38,7 +40,7 @@
 					videoEl.currentTime = videoEl.seekable.end(0) - 0.5;
 				}
 				player.play();
-			}, 2500);
+			}, 2000);
 		}
 	});
 </script>
