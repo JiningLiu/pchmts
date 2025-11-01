@@ -25,7 +25,7 @@ echo "[pchmts] > Installing pchmts..."
 
 mkdir -p ~/.pchmts/bin
 cd ~/.pchmts/bin
-curl -LO https://github.com/JiningLiu/pchmts/releases/download/v0.0.1/pchmts
+curl -LO https://github.com/JiningLiu/pchmts/releases/download/v0.0.2/pchmts
 chmod +x pchmts
 
 if ! grep -q 'export PATH="$HOME/.pchmts/bin:$PATH"' ~/.bashrc; then
